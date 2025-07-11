@@ -133,13 +133,7 @@ export const SearchForm: React.FC<SearchFormProps> = ({
               Nova Pesquisa
             </button>
           )}
-          <button
-            onClick={onOpenApiKey}
-            className="flex items-center px-3 py-2 text-sm text-gray-600 hover:text-gray-800 border border-gray-300 rounded-md hover:bg-gray-50 transition-colors"
-          >
-            <Settings className="w-4 h-4 mr-2" />
-            API Key
-          </button>
+          {/* Removido o botão de API Key */}
         </div>
       </div>
 

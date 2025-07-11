@@ -18,7 +18,7 @@ import type { SearchFilters, Company, PeopleSearchFilters, Person as PersonType 
 
 function App() {
   // State management
-  const [apiKey, setApiKey] = useLocalStorage<string>('apollo-api-key', '');
+  const [apiKey, setApiKey] = useLocalStorage<string>('apollo-api-key', import.meta.env.VITE_APOLLO_API_KEY || '');
   const [companies, setCompanies] = useState<Company[]>([]);
   const [people, setPeople] = useState<PersonType[]>([]);
   const [savedPeople, setSavedPeople] = useState<PersonType[]>([]);
@@ -57,13 +57,20 @@ function App() {
 
   // Set API key when component mounts or when apiKey changes
   React.useEffect(() => {
-    if (apiKey) {
-      apolloApiService.setApiKey(apiKey);
+    // Use API key from environment variable if available, otherwise use stored key
+    const finalApiKey = import.meta.env.VITE_APOLLO_API_KEY || apiKey;
+    if (finalApiKey) {
+      apolloApiService.setApiKey(finalApiKey);
+      // Update stored key if using environment variable
+      if (import.meta.env.VITE_APOLLO_API_KEY && !apiKey) {
+        setApiKey(finalApiKey);
+      }
     }
   }, [apiKey]);
 
   const handleSearch = async (filters: SearchFilters) => {
-    if (!apiKey) {
+    const finalApiKey = import.meta.env.VITE_APOLLO_API_KEY || apiKey;
+    if (!finalApiKey) {
       setIsApiKeyModalOpen(true);
       return;
     }
@@ -73,7 +80,7 @@ function App() {
     setCurrentFilters(filters);
 
     try {
-      apolloApiService.setApiKey(apiKey);
+      apolloApiService.setApiKey(finalApiKey);
       const response = await apolloApiService.searchCompanies(filters);
       
       setCompanies(response.organizations || []);
@@ -108,7 +115,8 @@ function App() {
   };
 
   const handlePeopleSearch = async (filters: PeopleSearchFilters) => {
-    if (!apiKey) {
+    const finalApiKey = import.meta.env.VITE_APOLLO_API_KEY || apiKey;
+    if (!finalApiKey) {
       setIsApiKeyModalOpen(true);
       return;
     }
@@ -139,7 +147,8 @@ function App() {
   };
 
   const handleQuickPeopleSearch = async (company: Company, filters: PeopleSearchFilters) => {
-    if (!apiKey) {
+    const finalApiKey = import.meta.env.VITE_APOLLO_API_KEY || apiKey;
+    if (!finalApiKey) {
       setIsApiKeyModalOpen(true);
       return;
     }
@@ -149,7 +158,7 @@ function App() {
     setSelectedCompany(company);
 
     try {
-      apolloApiService.setApiKey(apiKey);
+      apolloApiService.setApiKey(finalApiKey);
       const response = await apolloApiService.searchPeople(filters);
       
       const foundPeople = response.contacts || response.people || [];
@@ -170,7 +179,8 @@ function App() {
   };
 
   const handleEmailSearch = async (personId: string, organizationId?: string) => {
-    if (!apiKey) {
+    const finalApiKey = import.meta.env.VITE_APOLLO_API_KEY || apiKey;
+    if (!finalApiKey) {
       console.error('❌ API key é obrigatória para busca de email');
       return {
         person: { id: personId, name: 'Unknown', title: 'Unknown' } as any,
@@ -185,7 +195,7 @@ function App() {
     console.log(`🏢 Organization ID: ${organizationId}`);
 
     try {
-      apolloApiService.setApiKey(apiKey);
+      apolloApiService.setApiKey(finalApiKey);
       
       // Add timeout and error handling to prevent app crash
       const response = await Promise.race([
