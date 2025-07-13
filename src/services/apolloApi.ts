@@ -1,7 +1,10 @@
 import type { SearchResponse, SearchFilters, ApiError } from '../types/apollo';
 import type { PeopleSearchResponse, PeopleSearchFilters, EmailSearchResponse, EmailSearchFilters } from '../types/apollo';
 
-const API_BASE_URL = 'https://api.apollo.io/v1';
+const API_BASE_URL =
+  import.meta.env.PROD
+    ? '/.netlify/functions/apollo-proxy?endpoint='
+    : '/api/apollo/v1';
 
 class ApolloApiError extends Error {
   public status: number;
@@ -28,7 +31,10 @@ class ApolloApiService {
       throw new Error('API key is required. Please enter your Apollo.io API key.');
     }
 
-    const url = `${API_BASE_URL}${endpoint}`;
+    // Em produção, endpoint já é passado como query param
+    const url = import.meta.env.PROD
+      ? `${API_BASE_URL}${endpoint}`
+      : `${API_BASE_URL}${endpoint}`;
     const headers = {
       'Content-Type': 'application/json',
       'Cache-Control': 'no-cache',
