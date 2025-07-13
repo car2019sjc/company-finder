@@ -1,7 +1,7 @@
 import type { SearchResponse, SearchFilters, ApiError } from '../types/apollo';
 import type { PeopleSearchResponse, PeopleSearchFilters, EmailSearchResponse, EmailSearchFilters } from '../types/apollo';
 
-const API_BASE_URL = '/api/apollo/v1';
+const API_BASE_URL = 'https://api.apollo.io/v1';
 
 class ApolloApiError extends Error {
   public status: number;

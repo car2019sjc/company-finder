@@ -231,7 +231,7 @@ class ApolloEmailCapture {
       });
 
       const response = await Promise.race([
-        this.makeRequest(`/people/match?${queryParams.toString()}`, {
+        this.makeRequest(`https://api.apollo.io/v1/people/match?${queryParams.toString()}`, {
           method: 'POST',
           body: JSON.stringify(body),
         }),
