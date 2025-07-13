@@ -79,31 +79,28 @@ export const PeopleLeadsModal: React.FC<PeopleLeadsModalProps> = ({
   // Processar dados das pessoas para exibição
   const processedPeople: TablePerson[] = React.useMemo(() => {
     return people.map(person => {
-      const personId = person.id || `${person.name}-${Math.random()}`;
-      
+      const personId = person.id;
       // Se temos uma versão atualizada desta pessoa, usar ela
       const updatedPerson = updatedPeople[personId];
       if (updatedPerson) {
-        console.log(`📧 Usando pessoa atualizada: ${updatedPerson.name} - Email: ${updatedPerson.email}`);
         return updatedPerson;
       }
-      
       // Caso contrário, usar dados originais
       return {
-      ...person,
-      id: personId,
-      name: person.name || 'Nome não disponível',
-      title: person.title || person.headline || '', // Garantir string
-      email: person.email,
-      phone: person.phone_numbers?.[0]?.raw_number,
-      linkedin_url: person.linkedin_url,
-      city: person.city,
-      state: person.state,
-      country: person.country,
-      organization: person.organization || person.account
+        ...person,
+        id: personId,
+        name: person.name || 'Nome não disponível',
+        title: person.title || person.headline || '',
+        email: person.email,
+        phone: person.phone_numbers?.[0]?.raw_number,
+        linkedin_url: person.linkedin_url,
+        city: person.city,
+        state: person.state,
+        country: person.country,
+        organization: person.organization || person.account
       };
     });
-  }, [people, updatedPeople]); // Add updatedPeople as dependency
+  }, [people, updatedPeople]);
 
   // Filtrar e ordenar pessoas
   const filteredAndSortedPeople = React.useMemo(() => {
@@ -177,31 +174,17 @@ export const PeopleLeadsModal: React.FC<PeopleLeadsModalProps> = ({
         [person.id]: result
       }));
       
-      // CRITICAL: Atualizar a pessoa na tabela com os emails encontrados
+      // Atualizar a pessoa na tabela com o email encontrado
       if (result.success && result.emails && result.emails.length > 0) {
         const primaryEmail = result.emails[0].email;
-        
-        console.log(`🔄 Atualizando email na tabela para ${person.name}: ${primaryEmail}`);
-        
         const updatedPersonData: TablePerson = {
           ...person,
-          email: primaryEmail, // Atualizar o email principal
-          // Manter outros dados de contato se existirem
+          email: primaryEmail,
           phone: person.phone || (result.phone_numbers && result.phone_numbers.length > 0 ? result.phone_numbers[0].raw_number : undefined)
         };
-        
-        // Atualizar o estado das pessoas atualizadas
         setUpdatedPeople(prev => ({
           ...prev,
           [person.id]: updatedPersonData
-        }));
-        
-        console.log(`✅ Email atualizado na tabela para ${person.name}: ${primaryEmail}`);
-        
-        // Force re-render by updating the key
-        setEmailSearchResults(prev => ({
-          ...prev,
-          [person.id]: { ...result, emailUpdated: true }
         }));
       }
       
@@ -578,25 +561,7 @@ export const PeopleLeadsModal: React.FC<PeopleLeadsModalProps> = ({
             </select>
 
             {/* Industry Filter */}
-            <div className="relative">
-              <select
-                value=""
-                onChange={(e) => e.target.value && handleIndustryFilter(e.target.value)}
-                className="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-              >
-                <option value="">Filtrar por Indústria</option>
-                {uniqueIndustries.map(industry => (
-                  <option key={industry} value={industry}>
-                    {industry} {selectedIndustries.has(industry) ? '✓' : ''}
-                  </option>
-                ))}
-              </select>
-              {selectedIndustries.size > 0 && (
-                <div className="absolute -top-2 -right-2 bg-blue-600 text-white text-xs rounded-full w-5 h-5 flex items-center justify-center">
-                  {selectedIndustries.size}
-                </div>
-              )}
-            </div>
+            {/* Removido botão de filtro de indústria */}
           </div>
 
           {/* Active Filters */}

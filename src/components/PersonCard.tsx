@@ -80,8 +80,8 @@ export const PersonCard: React.FC<PersonCardProps> = ({ person }) => {
         {/* Telefones */}
         {person.phone_numbers && person.phone_numbers.length > 0 && (
           <div className="space-y-1">
-            {person.phone_numbers.slice(0, 2).map((phone, index) => (
-              <div key={index} className="flex items-center text-sm text-gray-600">
+            {person.phone_numbers.slice(0, 2).map((phone) => (
+              <div key={phone.raw_number} className="flex items-center text-sm text-gray-600">
                 <Phone className="w-4 h-4 mr-2 text-green-500 flex-shrink-0" />
                 <span className="text-green-600">{phone.raw_number}</span>
               </div>

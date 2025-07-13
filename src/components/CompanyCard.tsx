@@ -434,9 +434,9 @@ export const CompanyCard: React.FC<CompanyCardProps> = ({ company, onSearchPeopl
       {company.keywords && company.keywords.length > 0 && (
         <div className="mb-4">
           <div className="flex flex-wrap gap-2">
-            {company.keywords.slice(0, 5).map((keyword, index) => (
+            {company.keywords.slice(0, 5).map((keyword) => (
               <span
-                key={index}
+                key={keyword}
                 className="bg-gray-100 text-gray-700 px-2 py-1 rounded-md text-xs"
               >
                 {keyword}

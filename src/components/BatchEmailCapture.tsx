@@ -253,8 +253,8 @@ export const BatchEmailCapture: React.FC<BatchEmailCaptureProps> = ({
               Amostra dos Resultados ({Math.min(results.length, 10)} de {results.length})
             </h4>
             <div className="space-y-2 max-h-40 overflow-y-auto">
-              {results.slice(0, 10).map(({ person, result }, index) => (
-                <div key={index} className="flex items-center justify-between text-sm bg-white rounded px-3 py-2 border">
+              {results.slice(0, 10).map(({ person, result }) => (
+                <div key={person.id} className="flex items-center justify-between text-sm bg-white rounded px-3 py-2 border">
                   <div className="flex-1">
                     <span className="font-medium text-gray-900">{person.name}</span>
                     <span className="text-xs text-gray-500 ml-2">({person.title || 'Cargo não especificado'})</span>
