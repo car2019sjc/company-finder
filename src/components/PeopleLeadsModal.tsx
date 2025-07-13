@@ -87,17 +87,17 @@ export const PeopleLeadsModal: React.FC<PeopleLeadsModalProps> = ({
       }
       // Caso contrário, usar dados originais
       return {
-        ...person,
-        id: personId,
-        name: person.name || 'Nome não disponível',
+      ...person,
+      id: personId,
+      name: person.name || 'Nome não disponível',
         title: person.title || person.headline || '',
-        email: person.email,
-        phone: person.phone_numbers?.[0]?.raw_number,
-        linkedin_url: person.linkedin_url,
-        city: person.city,
-        state: person.state,
-        country: person.country,
-        organization: person.organization || person.account
+      email: person.email,
+      phone: person.phone_numbers?.[0]?.raw_number,
+      linkedin_url: person.linkedin_url,
+      city: person.city,
+      state: person.state,
+      country: person.country,
+      organization: person.organization || person.account
       };
     });
   }, [people, updatedPeople]);
